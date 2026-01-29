@@ -1,0 +1,195 @@
+<main class="flex-shrink-0 p-3 border-bottom bg-gray text-uppercase mb-5" id="breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-2">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Store</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Product</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>
+<main class="flex-shrink-0 mb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+
+                <h4 class='text-uppercase mb-4'>Categories</h4>
+                <div class="p-0" *ngIf="loadingFilter; else filter1">
+                   <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+                </div>
+                <ng-template #filter1>
+                    <div class="form-check" *ngFor="let category of categories">
+                        <input class="form-check-input"
+                          type="checkbox"
+                          name="category"
+                          [value]="category.Id"
+                          [checked]="selectedCategories.includes(category.Id)"
+                          (change)="handleCategory(category.Id, $event)"
+                        >
+                        <label class="form-check-label">
+                            {{ category.Name }} ({{ category.Total }})
+                        </label>
+                    </div>
+                </ng-template>
+
+
+                <h4 class='text-uppercase mt-4 mb-4'>Price</h4>
+                <div class="p-0" *ngIf="loadingFilter; else filter2">
+                  <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '100px' }"></ngx-skeleton-loader>
+                </div>
+                <ng-template #filter2>
+                    <div class="mt-2  mb-4">
+                        <ngx-slider  [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-success fw-bold">Minimum Price ($) </label>
+                        <input  type="text" class="form-control text-end" readonly [value]="minValue">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-danger fw-bold">Maximum Price ($) </label>
+                        <input  type="text" class="form-control text-end" readonly  [value]="maxValue">
+                    </div>
+                 </ng-template>
+
+
+
+                <h4 class='text-uppercase mb-4 mt-2'>Brands</h4>
+                <div class="p-0" *ngIf="loadingFilter; else filter3">
+                  <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                </div>
+                <ng-template #filter3>
+                     <div class="form-check" *ngFor="let brand of brands">
+                        <input class="form-check-input"
+                          type="checkbox"
+                          name="brand"
+                          [value]="brand.Id"
+                          [checked]="selectedBrands.includes(brand.Id)"
+                          (change)="handleBrand(brand.Id, $event)"
+                          >
+                        <label class="form-check-label">
+                            {{ brand.Name }} ({{ brand.Total }})
+                        </label>
+                    </div>
+                    <a href="#" (click)="handleFilter($event)" class="btn btn-primary mt-2 text-white w-100 mb-2">
+                        <i class="fas fa-filter mb-1 me-1"></i>Apply Filter
+                    </a>
+                </ng-template>
+
+
+                <h4 class='text-uppercase mt-4 mb-4'>Top Selling</h4>
+                <div class="p-0" *ngIf="loadingFilter; else filter4">
+                  <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                  <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                  <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                </div>
+                <ng-template #filter4>
+                  <div class="d-block" *ngFor="let product of topSellings">
+                    <div class="card border-0 mb-2">
+                        <div class="card-body clearfix">
+                            <div class="float-start">
+                                 <img [src]="product.Image.String" class='img img-responsive text-center' width="80"  alt="image" />
+                            </div>
+                            <div class="float-end">
+                                <small class='text-primary d-block'>{{ product.categoryName }}</small>
+                                <small class="fw-bolder d-block">{{ product.Name }}</small>
+                                <small class='text-danger me-2'>${{ product.Price }}</small><del><small class='text-muted'>${{ product.PriceOld }}</small></del>
+                                <div class="clearfix text-warning">
+                                   <i class="bi bi-star-fill" *ngFor="let i of [].constructor(product.TotalRating)"></i>
+                                   <i class="bi bi-star" *ngFor="let j of [].constructor(5 - product.TotalRating)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </ng-template>
+
+
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                           <label class="form-label fw-bold">Sort By</label>
+                           <select name="orderBy" class="form-control" [(ngModel)]="orderBy" (change)="handleOrderBy(orderBy)">
+                                <option value="published_at">Released Date</option>
+                                <option value="total_rating">Rating</option>
+                                <option value="priceMin">Lowest Price</option>
+                                <option value="priceMax">Highest Price</option>
+                           </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="mb-3">
+                           <label class="form-label fw-bold">Show</label>
+                           <select name="limit"  [(ngModel)]="limit" (change)="handleLimit(limit)" class="form-control">
+                                <option value="9">9 Products</option>
+                                <option value="27">27 Products</option>
+                                <option value="36">36 Products</option>
+                                <option value="45">45 Products</option>
+                           </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                           <label class="form-label fw-bold">Search</label>
+                           <div class="input-group">
+                                <input type="text" name="txtSearch" [(ngModel)]="search"  (change)="handleSearch(search)"  placeholder='Search here..' class="form-control" aria-label="Text input with dropdown button">
+                                <button (click)="handleFilter($event)" class="btn btn-primary" type="button" >
+                                    <span class="text-white"><i class="bi bi-search mb-1 me-1"></i>Search</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                   <ng-container *ngIf="loadingProduct; else productRef">
+                      <div class="col-md-4 col-xs-6" *ngFor="let i of [].constructor(9)">
+                         <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '435px' }"></ngx-skeleton-loader>
+                      </div>
+                   </ng-container>
+                   <ng-template #productRef>
+                       <div class="col-md-4 col-xs-6" *ngFor="let product of listProducts">
+                          <div class="card mb-3">
+                              <img [src]="product.Image.String" class="card-img-top" alt="" />
+                              <div class="card-body p-4">
+                                  <h5 class='text-primary'>{{ product.categoryName }} </h5>
+                                  <h6 class="fw-bolder">{{ product.Name }}</h6>
+                                  <strong class='text-danger me-2'>${{ product.Price }}</strong><del><strong class='text-muted'>${{ product.PriceOld }}</strong></del>
+                                  <div class="d-flex small text-warning">
+                                      <i class="bi bi-star-fill" *ngFor="let i of [].constructor(product.TotalRating)"></i>
+                                      <i class="bi bi-star" *ngFor="let j of [].constructor(5 - product.TotalRating)"></i>
+                                  </div>
+                              </div>
+                              <div *ngIf="authLogged" class="card-footer bg-transparent text-center border-top-0">
+                                  <a [routerLink]="['/cart', product.Id]" class="btn btn-primary text-white w-100 mb-2">
+                                    <i class="bi bi-cart-plus mb-1 me-1"></i>Add To Cart
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                   </ng-template>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-9">
+                        <nav aria-label="Page navigation example">
+                            <app-pagination
+                              [totalItems]="totalFiltered"
+                              [limit]="limit"
+                              [currentPage]="page"
+                              (pageChange)="loadPage($event)">
+                            </app-pagination>
+                        </nav>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <small class='text-muted mt-2'>Showing {{limit}}-{{ totalAll }} products</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

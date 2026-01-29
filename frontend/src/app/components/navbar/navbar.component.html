@@ -1,0 +1,14 @@
+<nav class="navbar-light border navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <button aria-controls="basic-navbar-nav" type="button" aria-label="Toggle navigation" class="navbar-toggler">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse" id="basic-navbar-nav">
+      <div class="main-nav navbar-nav">
+        <a class="nav-link" [routerLink]="['/']">Home</a>
+        <a class="nav-link" [routerLink]="['/store']">Hot Deals</a>
+        <a class="nav-link"[routerLink]="['/store']" [queryParams]="{ category: category.id }" *ngFor="let category of categories; index as i;">{{ category.name }}</a>
+      </div>
+    </div>
+  </div>
+</nav>

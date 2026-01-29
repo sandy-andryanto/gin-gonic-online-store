@@ -1,0 +1,221 @@
+<main class="flex-shrink-0">
+  <div class="container" *ngIf="loading; else content1">
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+      </div>
+      <div class="col-md-4">
+        <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+      </div>
+      <div class="col-md-4">
+        <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+      </div>
+    </div>
+  </div>
+  <ng-template #content1>
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-md-4"  *ngFor="let category of categories">
+          <div class="shop">
+            <div class="shop-img">
+              <img [src]="category.image.String" alt="" />
+            </div>
+            <div class="shop-body">
+              <h3 class="d-block">{{ category.name }}</h3>
+              <h3 class="d-block">Collection</h3>
+              <a  [routerLink]="['/store']" [queryParams]="{ category: category.id }" class="cta-btn"><i class="bi bi-arrow-right-circle me-1"></i>Shop now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</main>
+<main class="flex-shrink-0" id="products">
+  <div class="container p-3">
+    <div class="row">
+      <div class="col-md-12 mb-2">
+        <div class="section-title">
+          <h3 class="title">New Products</h3>
+          <div class="section-nav" *ngIf="loading; else content2">
+             <i class="fas fa-circle-notch fa-spin me-2"></i>Fetching Data....
+          </div>
+          <ng-template #content2>
+              <div class="section-nav">
+                 <ul class="section-tab-nav tab-nav">
+                  <li [ngClass]="activeTab1 === 0 ? 'active' : ''" ><a data-toggle="tab" (click)="setTab1($event, 0)" href="#" class='text-decoration-none'>Laptops</a></li>
+                  <li [ngClass]="activeTab1 === 1 ? 'active' : ''"><a data-toggle="tab" (click)="setTab1($event, 1)" href="#" class='text-decoration-none'>Smartphones</a></li>
+                  <li [ngClass]="activeTab1 === 2 ? 'active' : ''"><a data-toggle="tab" (click)="setTab1($event, 2)" href="#" class='text-decoration-none'>Cameras</a></li>
+                  <li [ngClass]="activeTab1 === 3 ? 'active' : ''"><a data-toggle="tab" (click)="setTab1($event, 3)" href="#" class='text-decoration-none'>Accessories</a></li>
+                </ul>
+              </div>
+          </ng-template>
+        </div>
+      </div>
+      <div *ngIf="loading; else content3">
+        <div class="row">
+           <div class="col-md-4">
+              <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+          </div>
+            <div class="col-md-4">
+              <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+          </div>
+            <div class="col-md-4">
+              <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+          </div>
+        </div>
+      </div>
+      <ng-template #content3>
+        <div class="col-md-12">
+         <app-slider [products]="products"></app-slider>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</main>
+<main class="flex-shrink-0" *ngIf="loading; else content4">
+   <div class="container">
+      <div class="row">
+          <div class="col-md-4">
+            <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+        </div>
+          <div class="col-md-4">
+            <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+        </div>
+          <div class="col-md-4">
+            <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '300px' }"></ngx-skeleton-loader>
+        </div>
+      </div>
+   </div>
+</main>
+<ng-template #content4>
+  <main class="flex-shrink-0 border" id="hot-deal">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="hot-deal">
+            <ul class="hot-deal-countdown">
+              <li>
+                <div>
+                  <h3>02</h3>
+                  <span>Days</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>10</h3>
+                  <span>Hours</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>34</h3>
+                  <span>Mins</span>
+                </div>
+              </li>
+              <li>
+                <div>
+                  <h3>60</h3>
+                  <span>Secs</span>
+                </div>
+              </li>
+            </ul>
+            <h2 class="text-uppercase">hot deal this week</h2>
+            <p>New Collection Up to 50% OFF</p>
+            <a [routerLink]="['/store']" class="bg-primary btn w-25 mt-1 text-white">
+              <i class="bi bi-cart 'mb-1 me-1"></i>Shop now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>
+
+<main class="flex-shrink-0" id="top-selling">
+  <div class="container p-3">
+    <div class="row">
+      <div class="col-md-12 mb-2">
+        <div class="section-title">
+          <h3 class="title">Top Selling</h3>
+          <div class="section-nav" *ngIf="loading; else content5">
+            <i class="fas fa-circle-notch fa-spin me-2"></i>Fetching Data....
+          </div>
+          <ng-template #content5>
+              <div class="section-nav">
+                 <ul class="section-tab-nav tab-nav">
+                    <li [ngClass]="activeTab2 === 0 ? 'active' : ''" ><a data-toggle="tab" (click)="setTab2($event, 0)" href="#" class='text-decoration-none'>Laptops</a></li>
+                    <li [ngClass]="activeTab2 === 1 ? 'active' : ''"><a data-toggle="tab" (click)="setTab2($event, 1)" href="#" class='text-decoration-none'>Smartphones</a></li>
+                    <li [ngClass]="activeTab2 === 2 ? 'active' : ''"><a data-toggle="tab" (click)="setTab2($event, 2)" href="#" class='text-decoration-none'>Cameras</a></li>
+                    <li [ngClass]="activeTab2 === 3 ? 'active' : ''"><a data-toggle="tab" (click)="setTab2($event, 3)" href="#" class='text-decoration-none'>Accessories</a></li>
+                </ul>
+              </div>
+          </ng-template>
+        </div>
+      </div>
+      <div *ngIf="loading; else content6">
+        <div class="row">
+           <div class="col-md-4">
+              <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+          </div>
+            <div class="col-md-4">
+              <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+          </div>
+            <div class="col-md-4">
+              <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+          </div>
+        </div>
+      </div>
+      <ng-template #content6>
+          <div class="col-md-12">
+            <app-slider [products]="topSellings"></app-slider>
+          </div>
+      </ng-template>
+    </div>
+  </div>
+</main>
+<main class="flex-shrink-0 mt-5" id="best-seller">
+  <div class="container p-3">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="section-title text-center">
+          <h5 class="title">Best Seller</h5>
+        </div>
+        <div *ngIf="loading; else content7">
+          <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+        </div>
+        <ng-template #content7>
+          <div class="slider-container">
+           <app-best-seller [products]="bestSellers"></app-best-seller>
+          </div>
+        </ng-template>
+      </div>
+      <div class="col-md-4">
+        <div class="section-title text-center">
+          <h5 class="title">Best Seller</h5>
+        </div>
+        <div *ngIf="loading; else content8">
+          <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+        </div>
+        <ng-template #content8>
+          <div class="slider-container">
+            <app-best-seller [products]="bestSellers"></app-best-seller>
+          </div>
+        </ng-template>
+      </div>
+      <div class="col-md-4">
+        <div class="section-title text-center">
+          <h5 class="title">Best Seller</h5>
+        </div>
+        <div *ngIf="loading; else content9">
+          <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '600px' }"></ngx-skeleton-loader>
+        </div>
+        <ng-template #content9>
+          <div class="slider-container">
+            <app-best-seller [products]="bestSellers"></app-best-seller>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</main>

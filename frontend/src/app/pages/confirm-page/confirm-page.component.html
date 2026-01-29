@@ -1,0 +1,51 @@
+<main class="flex-shrink-0 p-3 border-bottom bg-gray text-uppercase mb-5" id="breadcrumb">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mt-2">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Authentication</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Account Verification</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</main>
+<main class="flex-shrink-0 mb-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mx-auto">
+        <div class="card">
+          <div class="card-header text-center bg-primary p-2">
+            <h5 class="text-white"><i class="bi-person-check me-2"></i>Account Verification</h5>
+          </div>
+           <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
+            </div>
+          <div class="card-body mb-2 p-4 text-center" *ngIf="loading; else loadFinished">
+            <ng-lottie [options]="checkingOption" class="lottie-animation"></ng-lottie>
+          </div>
+          <div class="card-footer p-3 text-center bg-primary">
+            <span class="text-white">
+              <small>Copyright {{ nowYear }} - Elector Store</small>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<ng-template #loadFinished>
+  <div class="card-body mb-2 p-4 text-center">
+    <ng-lottie [options]="confirmedOption" class="lottie-animation"></ng-lottie>
+    <div class="alert alert-success">
+      <small>Your registration is complete. Now you can login</small>
+    </div>
+    <a [routerLink]="['/auth/login']" class="btn btn-primary w-100 mt-3">
+      <i class="bi-box-arrow-right me-2"></i>Please login here.
+    </a>
+  </div>
+</ng-template>

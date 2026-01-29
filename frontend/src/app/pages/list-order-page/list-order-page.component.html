@@ -1,0 +1,133 @@
+<main class="flex-shrink-0 p-3 border-bottom bg-gray text-uppercase mb-5" id="breadcrumb">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mt-2">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Order</a></li>
+            <li class="breadcrumb-item active" aria-current="page">List Order</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+</main>
+<main class="flex-shrink-0 mb-4">
+  <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Sort By</label>
+                <select  class="form-control" [(ngModel)]="orderBy"  (change)="handleOrderBy($event)">
+                    <option value="created_at">Order Date</option>
+                    <option value="invoice_number">Order Number</option>
+                    <option value="total_item">Total Product</option>
+                    <option value="total_paid">Total Payment</option>
+                    <option value="status">Status</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Sort Direction</label>
+                <select class="form-control" [(ngModel)]="sortBy" (change)="handleSortBy($event)">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Limit</label>
+                <select class="form-control"  [(ngModel)]="limit" (change)="handleLimit($event)">
+                    <option value="10">10 Rows</option>
+                    <option value="25">25 Rows</option>
+                    <option value="50">50 Rows</option>
+                    <option value="100">100 Rows</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Search By Keyword</label>
+                <input type="text"  placeholder='Search here..' class="form-control" aria-label="Text input with dropdown button">
+            </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+                <thead>
+                  <tr>
+                      <th class="text-center">No</th>
+                      <th>Order Date</th>
+                      <th>Order Number</th>
+                      <th class="text-center">Total Item</th>
+                      <th class="text-center">Total Payment</th>
+                      <th class="text-center">Status</th>
+                      <th class="text-center">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngIf="loading; else contentTemplate">
+                  <tr>
+                      <td colspan="7" class="text-center">
+                          <span><i class="fas fa-circle-notch fa-spin me-2"></i>Loading fetching data....</span>
+                      </td>
+                  </tr>
+                </ng-container>
+                <ng-template #contentTemplate>
+                    <ng-container *ngIf="orders.length === 0; else contentTemplate2">
+                       <tr>
+                         <td colspan="7" class="text-center">
+                          <span>No Data Available.</span>
+                        </td>
+                       </tr>
+                    </ng-container>
+                    <ng-template #contentTemplate2>
+                        <tr *ngFor="let row of orders; let i = index">
+                          <td class="text-center">{{ i + 1 }}</td>
+                          <td>{{ row.created_at | moment:'dddd, DD/MM/YYYY HH:mm' }}</td>
+                          <td>{{ row.invoice_number }}</td>
+                          <td class="text-center">{{ row.total_item }}</td>
+                          <td class="text-center">{{ row.total_paid }}</td>
+                          <td class="text-center">
+                            <ng-container *ngIf="row.status === 0; else statusTemplate">
+                               <span class="badge bg-danger">Draft</span>
+                            </ng-container>
+                            <ng-template #statusTemplate>
+                               <span class="badge bg-success">Completed</span>
+                            </ng-template>
+                          </td>
+                          <td class="text-center">
+                              <ng-container *ngIf="row.status === 0; else statusTemplate2">
+                                   <a [routerLink]="['/order/detail', row.id]" class="btn btn-sm btn-secondary me-1">
+                                    <i class="fas fa-search"></i>
+                                  </a>
+                                  <button (click)="handleDelete($event, row.id)" class="btn btn-sm btn-danger">
+                                     <i class="fas fa-trash"></i>
+                                  </button>
+                              </ng-container>
+                              <ng-template #statusTemplate2>
+                                  <a [routerLink]="['/order/detail', row.id]" class="btn btn-sm btn-secondary me-1">
+                                    <i class="fas fa-search"></i>
+                                  </a>
+                              </ng-template>
+                          </td>
+                        </tr>
+                    </ng-template>
+                </ng-template>
+              </tbody>
+            </table>
+            <div class="clearfix">
+              <div class="float-start">
+                <app-pagination
+                  [totalItems]="totalFiltered"
+                  [limit]="limit"
+                  [currentPage]="page"
+                  (pageChange)="loadPage($event)">
+                </app-pagination>
+              </div>
+              <div class="float-end">
+                  <button (click)="handleFilter($event)" [classList]="loading ? 'disabled btn btn-primary' : 'btn btn-primary'">
+                    <i class="fas fa-filter me-1"></i>Apply Filter
+                  </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</main>

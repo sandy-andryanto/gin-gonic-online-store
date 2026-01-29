@@ -1,0 +1,38 @@
+<ng-container *ngIf="loading; then loadSection; else checkConnection">
+</ng-container>
+
+<ng-template #loadSection>
+  <main class="flex-shrink-0 p-3 mb-5">
+    <div class="container loader-section">
+      <div class="row">
+        <div class="col-md-5 mt-5 mx-auto">
+          <ng-lottie [options]="animationOption" class="lottie-animation"></ng-lottie>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>
+
+<ng-template #checkConnection>
+  <main class="flex-shrink-0 p-3 mb-5 error-section" *ngIf="!connected; else appSection">
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="text-center">
+        <h1 class="display fw-bold text-muted text-error-code"><i class="bi bi-wifi-off"></i></h1>
+        <p class="fs-3"> <span class="text-danger">Opps!</span> Disconnected from server</p>
+        <div class="lead">
+          Sorry, An Http error has occurred. Please close the client and try again.
+        </div>
+      </div>
+    </div>
+  </main>
+  <ng-template #appSection>
+    <app-header></app-header>
+    <app-navbar></app-navbar>
+    <router-outlet />
+    <app-newsletter class="mt-auto"></app-newsletter>
+    <app-footer></app-footer>
+    <a href="#" (click)="clickToTop($event)" class="btn btn-lg btn-primary back-to-top" [style.display]="backTo ? 'flex' : 'none'">
+      <i class="bi bi-chevron-up"></i>
+    </a>
+  </ng-template>
+</ng-template>

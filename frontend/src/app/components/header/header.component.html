@@ -1,0 +1,134 @@
+<header>
+  <div id="top-header" class='p-0 bg-dark'>
+    <div class="container py-2">
+      <div class='clearfix'>
+        <ul class="header-links float-start p-0" *ngIf="auth">
+          <li><a href="https://wa.me/628989218470"><i class="bi bi-telephone-outbound me-1 mb-1 text-primary"></i>
+              {{userPhone}}</a></li>
+          <li><a href="#"><i class="bi bi-person me-1 mb-1 text-primary"></i>
+              {{userName}}</a></li>
+          <li><a href="#"><i class="bi bi-pin-map me-1 mb-1 text-primary"></i> {{userLocation}}</a></li>
+        </ul>
+        <ul class="header-links float-end p-0 header-account">
+          <li *ngIf="auth"><a [routerLink]="['/order/list']"><i class="bi bi-cart me-1 mb-1 text-primary"></i> List Order</a></li>
+          <li *ngIf="auth"><a [routerLink]="['/account/profile']"><i class="bi bi-person-plus me-1 mb-1 text-primary"></i> My
+              Account</a></li>
+          <li *ngIf="auth"><a [routerLink]="['/account/password']"><i class="bi bi-lock me-1 mb-1 text-primary"></i> Change Password</a></li>
+          <li *ngIf="auth"><a href="#" (click)="logOut($event)"><i class="fas fa-sign-out me-1 mb-1 text-primary"></i> Sign Out</a></li>
+          <li *ngIf="!auth"><a [routerLink]="['/auth/login']"><i class="bi bi-person-circle me-1 mb-1 text-primary"></i> Login</a>
+          </li>
+          <li *ngIf="!auth"><a [routerLink]="['/auth/register']"><i class="bi bi-person-fill-add me-1 mb-1 text-primary"></i>
+              Register</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div id="header" class="bg-primary p-2">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="header-logo">
+            <a [routerLink]="['/']" class="logo">
+              <img src="/logo.png" alt="logo" />
+            </a>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="header-search mt-3">
+            <div class="input-group">
+              <div ngbDropdown class="d-inline-block">
+                <button type="button" class="btn btn-dark" id="dropdownBasic1" ngbDropdownToggle>
+                  <i class="bi bi-cart me-1"></i>{{ fliterSelected ? categories[fliterSelected].name : 'All Categories' }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <button ngbDropdownItem *ngFor="let category of categories; index as i;" (click)="setFilter($event, i)">
+                    {{ category.name }}</button>
+                </div>
+              </div>
+              <input type="text" [(ngModel)]="txtSearch" placeholder='Search here..' class="form-control"
+                aria-label="Text input with dropdown button">
+              <button class="btn bg-dark" type="button" (click)="handleSearch($event)">
+                <span class="text-white"><i class="bi bi-search mb-1 me-1"></i>Search</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 clearfix" *ngIf="auth">
+          <div class="header-ctn">
+            <div class="position-relative" *ngIf="whislists.length > 0">
+              <a (click)="showModal($event, wishlist)" href="#" class="text-center text-decoration-none fw-bold">
+                <i class="bi bi-heart mb-2"></i>
+                <span class='d-block'>Your Wishlist</span>
+              </a>
+              <span class="position-absolute top-0 ms-3 start-50 translate-middle badge rounded-pill bg-danger">
+                {{ whislists.length }}
+                <span class="visually-hidden">New Wishlist</span>
+              </span>
+            </div>
+            <div class="position-relative" *ngIf="carts.length > 0">
+              <a href="#" (click)="showModal($event, cart)" class="text-center text-decoration-none fw-bold">
+                <i class="bi bi-cart mb-2"></i>
+                <span class='d-block'>Your Cart</span>
+              </a>
+              <span class="position-absolute top-0 ms-3 start-50 translate-middle badge rounded-pill bg-danger">
+                 {{ carts.length }}
+                <span class="visually-hidden">Your Cart</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<ng-template #wishlist let-modal>
+  <div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">My Wishlist</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+	</div>
+  <div class="modal-body">
+    <div class="row mb-2" *ngFor="let product of whislists; index as i;">
+        <div class="col-md-4 text-center">
+            <img [src]="product.Image.String" class='img-thumbnail img-responsive' width="100" alt=""/>
+        </div>
+        <div class="col-md-8">
+            <a href="#" class="text-decoration-none text-uppercase text-muted d-block">
+                <strong>{{ product.Name }}</strong>
+            </a>
+            <h5>${{ product.Price }}</h5>
+        </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #cart let-modal>
+  <div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">My Cart</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+	</div>
+  <div class="modal-body">
+    <div class="row mb-2" *ngFor="let product of carts; index as i;">
+      <div class="col-md-4 text-center">
+          <img [src]="product.Image.String" class='img-thumbnail img-responsive' width="100" alt=""/>
+      </div>
+      <div class="col-md-8">
+          <a href="#" class="text-decoration-none text-uppercase text-muted d-block">
+              <strong>{{ product.Name }}</strong>
+          </a>
+          <span class='d-block mb-2'>
+              {{ product.Qty }} x <strong>${{ product.Price }}</strong>
+          </span>
+          <h5>${{ product.Total }}</h5>
+      </div>
+    </div>
+    <div class="cart-summary">
+        <small>{{ carts.length }} Item(s) selected</small>
+        <h5>SUBTOTAL: ${{ order.subtotal}}</h5>
+    </div>
+    <div class="cart-btns">
+      <a href="#" (click)="redirectTo($event, '/order/list')" class="text-decoration-none">View Cart <i class="bi bi-cart ms-1"></i></a>
+      <a href="#" (click)="redirectTo($event, '/checkout')" class="text-decoration-none">Checkout <i class="bi bi-arrow-right-circle ms-1"></i></a>
+    </div>
+  </div>
+</ng-template>

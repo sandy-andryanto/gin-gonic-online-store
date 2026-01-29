@@ -1,0 +1,258 @@
+<main class="flex-shrink-0 p-3 border-bottom bg-gray text-uppercase mb-5" id="breadcrumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mt-2">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Order</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Check Out</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>
+<main class="flex-shrink-0 mb-5">
+    <div class="container">
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+        <form [formGroup]="formData" (ngSubmit)="onSubmit()" novalidate>
+          <div class="row">
+             <div class="col-md-5" *ngIf="loading; else content1">
+                <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+             </div>
+             <ng-template #content1>
+                <div class="col-md-5">
+                    <h3 class='text-uppercase mb-3 text-center'>Billing address</h3>
+                      <div class="mb-3">
+                          <label class="form-label">First Name <span class="text-danger">*</span></label>
+                          <input
+                              type="text"
+                              id="first_name"
+                              placeholder="Enter Your First Name"
+                              class="form-control"
+                              [ngClass]="{ 'is-invalid': first_name?.invalid && first_name?.touched }"
+                              formControlName="first_name"
+                            />
+                            <div *ngIf="first_name?.invalid && first_name?.touched" class="invalid-feedback">
+                              <div *ngIf="first_name?.errors?.['required']">First Name is required.</div>
+                            </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                         <input
+                            type="text"
+                            id="last_name"
+                            placeholder="Enter Your Last Name"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': last_name?.invalid && last_name?.touched }"
+                            formControlName="last_name"
+                          />
+                          <div *ngIf="last_name?.invalid && last_name?.touched" class="invalid-feedback">
+                            <div *ngIf="last_name?.errors?.['required']">Last Name is required.</div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">E-Mail Address <span class="text-danger">*</span></label>
+                          <input
+                              type="email"
+                              id="email"
+                              placeholder="Enter Your E-Mail Address"
+                              class="form-control"
+                              [ngClass]="{ 'is-invalid': email?.invalid && email?.touched }"
+                              formControlName="email"
+                            />
+                          <div *ngIf="email?.invalid && email?.touched" class="invalid-feedback">
+                            <div *ngIf="email?.errors?.['required']">Email is required.</div>
+                            <div *ngIf="email?.errors?.['email']">Email is not valid.</div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                          <input
+                              type="text"
+                              id="phone"
+                              placeholder="Enter Your Phone Number"
+                              class="form-control"
+                              [ngClass]="{ 'is-invalid': phone?.invalid && phone?.touched }"
+                              formControlName="phone"
+                            />
+                            <div *ngIf="phone?.invalid && phone?.touched" class="invalid-feedback">
+                              <div *ngIf="phone?.errors?.['required']">Phone Number is required.</div>
+                            </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">City <span class="text-danger">*</span></label>
+                          <input
+                            type="text"
+                            id="city"
+                            placeholder="Enter Your City"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': city?.invalid && city?.touched }"
+                            formControlName="city"
+                          />
+                          <div *ngIf="city?.invalid && city?.touched" class="invalid-feedback">
+                            <div *ngIf="city?.errors?.['required']">City is required.</div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Country <span class="text-danger">*</span></label>
+                          <input
+                            type="text"
+                            id="country"
+                            placeholder="Enter Your Country"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': country?.invalid && country?.touched }"
+                            formControlName="country"
+                          />
+                          <div *ngIf="country?.invalid && country?.touched" class="invalid-feedback">
+                            <div *ngIf="country?.errors?.['required']">Country is required.</div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Zip Code <span class="text-danger">*</span></label>
+                          <input
+                            type="text"
+                            id="zip_code"
+                            placeholder="Enter Your Zip Code"
+                            class="form-control"
+                            [ngClass]="{ 'is-invalid': zip_code?.invalid && zip_code?.touched }"
+                            formControlName="zip_code"
+                          />
+                          <div *ngIf="zip_code?.invalid && zip_code?.touched" class="invalid-feedback">
+                            <div *ngIf="zip_code?.errors?.['required']">Zip Code is required.</div>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Street Address <span class="text-danger">*</span></label>
+                           <textarea
+                            rows="3"
+                            placeholder='Enter Your Street Address'
+                            [ngClass]="{ 'is-invalid': address?.invalid && address?.touched }"
+                            formControlName="address"
+                            class="form-control"
+                          ></textarea>
+                          <div *ngIf="address?.invalid && address?.touched" class="invalid-feedback">
+                              <div *ngIf="address?.errors?.['required']">Zip Code is required.</div>
+                            </div>
+                      </div>
+                      <div class="mb-3">
+                          <label class="form-label">Notes </label>
+                           <textarea
+                            rows="3"
+                            placeholder='Enter Your Notes'
+                            formControlName="notes"
+                            class="form-control"
+                          ></textarea>
+                      </div>
+                </div>
+              </ng-template>
+              <div class="col-md-7">
+                 <div *ngIf="loading; else content2">
+                    <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                    <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                    <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                    <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                    <ngx-skeleton-loader appearance="square"  [theme]="{ width: '100%', height: '200px' }"></ngx-skeleton-loader>
+                 </div>
+                 <ng-template #content2>
+                   <h3 class='text-uppercase mb-3 text-center'>Details Order</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row mb-2"  *ngFor="let product of carts">
+                                <div class="col-md-3 text-center">
+                                    <img class="img-responsive" width="120" [src]="product.Image.String" alt="image" />
+                                </div>
+                                <div class="col-md-7 text-start p-3">
+                                    <a href='#' class='text-decoration-none text-uppercase text-muted d-block mt-3'>
+                                        <strong>{{ product.Name }}</strong>
+                                    </a>
+                                    <span class='d-block mb-2 text-danger fw-bold'>
+                                        {{ product.Qty }} x <strong>${{ product.Price }}</strong>
+                                    </span>
+                                </div>
+                                <div class="col-md-2 text-end p-3">
+                                    <h6 class='text-danger fw-bold mt-4'>${{ product.Total }}</h6>
+                                </div>
+                            </div>
+                            <div class='border-top'></div>
+                            <div class="row mb-1 p-2 mt-2">
+                                <div class="col-md-3">
+                                    <h6 class='text-start text-muted fw-bold text-uppercase'>subtotal</h6>
+                                </div>
+                                <div class="col-md-9 text-end">
+                                    <h6 class='text-danger fw-bold'>${{ order.subtotal }}</h6>
+                                </div>
+                            </div>
+                            <div class="row mb-1 p-2 mt-2">
+                                <div class="col-md-3">
+                                    <h6 class='text-start text-muted fw-bold text-uppercase'>Shiping</h6>
+                                </div>
+                                <div class="col-md-9 text-end">
+                                    <h6 class='text-danger fw-bold'>${{ order.total_shipment }}</h6>
+                                </div>
+                            </div>
+                             <div class="row mb-1 p-2 mt-2">
+                                <div class="col-md-3">
+                                    <h6 class='text-start text-muted fw-bold text-uppercase'>Discount ({{ discount }}%)</h6>
+                                </div>
+                                <div class="col-md-9 text-end">
+                                    <h6 class='text-danger fw-bold'>${{ order.total_discount }}</h6>
+                                </div>
+                            </div>
+                            <div class="row mb-1 p-2 mt-2">
+                                <div class="col-md-3">
+                                    <h6 class='text-start text-muted fw-bold text-uppercase'>Taxes ({{ taxes }}%)</h6>
+                                </div>
+                                <div class="col-md-9 text-end">
+                                    <h6 class='text-danger fw-bold'>${{ order.total_taxes }}</h6>
+                                </div>
+                            </div>
+                            <div class="row mb-1 p-2 mt-2">
+                                <div class="col-md-3">
+                                    <h3 class='text-start text-muted fw-bold text-uppercase'>Total</h3>
+                                </div>
+                                <div class="col-md-9 text-end">
+                                    <h6 class='text-danger fw-bold'>${{ order.total_paid }}</h6>
+                                </div>
+                            </div>
+                            <div class="row mb-1 p-2 mt-2">
+                                <div class="col-md-12">
+                                    <div *ngFor="let pp of payments">
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="radio" name="payment" [value]="pp.id" [checked]="payment === pp.id" (change)="setPayment($event, pp.id)">
+                                          <label class="form-check-label">
+                                              {{ pp.name }}
+                                          </label>
+                                      </div>
+                                      <p class="d-block p-1" *ngIf="payment === pp.id">
+                                          <small>
+                                            {{ pp.description }}
+                                          </small>
+                                      </p>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" (change)="setAccept($event)">
+                                        <label class="form-check-label">
+                                            I've read and accept the terms & conditions
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-primary btn-lg w-100 mt-4" [disabled]="formData.invalid || !accept" type="submit">
+                                        <i class="bi bi-cart-check mb-1 me-1"></i> Place order
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </ng-template>
+             </div>
+         </div>
+        </form>
+    </div>
+ </main>
