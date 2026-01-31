@@ -1,7 +1,7 @@
 /**
  * This file is part of the Sandy Andryanto Blog Applicatione.
  *
- * @author     Sandy Andryanto <sandy.andryanto.blade@gmail.com>
+ * @author     Sandy Andryanto <sandy.andryanto.official@gmail.com>
  * @copyright  2024
  *
  * For the full copyright and license information,
